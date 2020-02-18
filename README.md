@@ -52,9 +52,11 @@ Abaixo estão descritas as funcionalidades adicionadas na aplicação.
 ## 🚀 Instalação e execução
 
 1. Faça um clone desse repositório;
-2. Entre na pasta rodando `cd bootcamp-gostack-02`;
+2. Entre na pasta rodando `cd bootcamp-gostack-desafio-02`;
 3. Rode `yarn` para instalar as dependências;
-4. Crie um banco de dados no `postgres` com o nome de `gobarber`;
+4. Crie um banco de dados no `postgres` com o nome de `fastfeet`;
 5. Altere as credencias dentro de `/src/app/config/database.js`;
 6. Rode `yarn sequelize db:migrate` para executar as migrations;
-7. Rode `yarn dev` para iniciar o servidor.
+7. Rode `yarn sequelize db:seed:all` para inserir o seed;
+8. Rode `yarn dev` para iniciar o servidor.
+
