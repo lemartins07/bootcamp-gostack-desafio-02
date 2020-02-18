@@ -12,5 +12,6 @@ routes.use(authMiddleware);
 
 // Rotas que precisam de autenticação
 routes.post('/recipients', RecipientsController.store);
+routes.put('/recipients/:id', RecipientsController.update);
 
 export default routes;

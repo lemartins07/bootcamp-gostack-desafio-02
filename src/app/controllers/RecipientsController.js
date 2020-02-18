@@ -30,6 +30,43 @@ class RecipientsController {
       state,
     });
   }
+
+  async update(req, res) {
+    const { name } = req.body;
+    const { id } = req.params;
+
+    const recipient = await Recipient.findByPk(id);
+
+    if (name !== recipient.name) {
+      const recipientExists = Recipient.findOne({
+        where: { name },
+      });
+
+      if (recipientExists) {
+        return res.status(400).json({ error: 'Recipient already exists.' });
+      }
+    }
+
+    const {
+      street,
+      number,
+      complement,
+      zip_code,
+      city,
+      state,
+    } = await recipient.update(req.body);
+
+    return res.json({
+      id,
+      name,
+      street,
+      number,
+      complement,
+      zip_code,
+      city,
+      state,
+    });
+  }
 }
 
 export default new RecipientsController();
