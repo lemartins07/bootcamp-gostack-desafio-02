@@ -8,7 +8,14 @@ import Queue from '../../lib/Queue';
 
 class DeliveryController {
   async index(req, res) {
-    return res.json();
+    const { page = 1 } = req.query;
+
+    const deliveries = await Delivery.findAll({
+      limit: 20,
+      offset: (page - 1) * 20,
+    });
+
+    return res.json(deliveries);
   }
 
   async store(req, res) {
@@ -40,10 +47,6 @@ class DeliveryController {
       ],
     });
 
-    // deliveryman: '',
-    // recipient: '',
-    // product: '',
-
     // enviar email para o entregador
     await Queue.add(DeliveryMail.key, delivery);
 
@@ -51,11 +54,28 @@ class DeliveryController {
   }
 
   async update(req, res) {
-    return res.json();
+    const schema = Yup.object().shape({
+      recipient_id: Yup.number().required(),
+      deliveryman_id: Yup.number().required(),
+      product: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' });
+    }
+
+    const delivery = await Delivery.findOne({ where: { id: req.params.id } });
+
+    await delivery.update(req.body);
+
+    return res.json(delivery);
   }
 
   async delete(req, res) {
-    return res.json();
+    const deletedRows = await Delivery.destroy({
+      where: { id: req.params.id },
+    });
+    return res.json(deletedRows);
   }
 }
 

@@ -23,16 +23,16 @@ routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
 
 // Deliverymans
-routes.get('/deliverymans', DeliverymanController.index);
-routes.post('/deliverymans', DeliverymanController.store);
-routes.put('/deliverymans/:id', DeliverymanController.update);
-routes.delete('/deliverymans/:id', DeliverymanController.delete);
+routes.get('/deliverymen', DeliverymanController.index);
+routes.post('/deliverymen', DeliverymanController.store);
+routes.put('/deliverymen/:id', DeliverymanController.update);
+routes.delete('/deliverymen/:id', DeliverymanController.delete);
 
-// Deliverys
-routes.get('/deliverys', DeliveryController.index);
-routes.post('/deliverys', DeliveryController.store);
-routes.put('/deliverys/:id', DeliveryController.update);
-routes.delete('/deliverys/:id', DeliveryController.delete);
+// Deliveries
+routes.get('/deliveries', DeliveryController.index);
+routes.post('/deliveries', DeliveryController.store);
+routes.put('/deliveries/:id', DeliveryController.update);
+routes.delete('/deliveries/:id', DeliveryController.delete);
 
 // Files
 routes.post('/files', upload.single('file'), FileController.store);

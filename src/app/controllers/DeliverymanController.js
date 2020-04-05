@@ -42,20 +42,20 @@ class DeliverymanController {
   }
 
   async update(req, res) {
-    const { name, email } = req.body;
-    const deliveryman = await Deliveryman.findByPk(req.params.id);
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string()
+        .email()
+        .required(),
+    });
 
-    if (email !== deliveryman.email) {
-      const deliverymanExists = await Deliveryman.findOne({ where: { email } });
-
-      if (deliverymanExists) {
-        return res.status(400).json({ error: 'Deliveryman already exists.' });
-      }
+    // passa os dados do corpo da requisição para o schema definido validar
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' });
     }
 
-    await deliveryman.update(req.body);
-
-    const { avatar } = await Deliveryman.findByPk(req.params.id, {
+    const { email } = req.body;
+    const deliveryman = await Deliveryman.findByPk(req.params.id, {
       include: [
         {
           model: File,
@@ -65,12 +65,17 @@ class DeliverymanController {
       ],
     });
 
-    return res.json({
-      id: req.params.id,
-      name,
-      email,
-      avatar,
-    });
+    if (email !== deliveryman.email) {
+      const deliverymanExists = await Deliveryman.findOne({ where: { email } });
+
+      if (deliverymanExists) {
+        return res.status(400).json({ error: 'This e-mail already exists.' });
+      }
+    }
+
+    await deliveryman.update(req.body);
+
+    return res.json(deliveryman);
   }
 
   async delete(req, res) {
