@@ -3,7 +3,7 @@ import multer from 'multer';
 import multerConfig from './config/multer';
 
 import SessionController from './app/controllers/SessionController';
-import RecipientsController from './app/controllers/RecipientsController';
+import RecipientController from './app/controllers/RecipientController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import FileController from './app/controllers/FileController';
 import DeliveryController from './app/controllers/DeliveryController';
@@ -18,9 +18,9 @@ routes.post('/sessions', SessionController.store);
 routes.use(authMiddleware);
 
 // Rotas que precisam de autenticação
-routes.get('/recipients', RecipientsController.index);
-routes.post('/recipients', RecipientsController.store);
-routes.put('/recipients/:id', RecipientsController.update);
+routes.get('/recipients', RecipientController.index);
+routes.post('/recipients', RecipientController.store);
+routes.put('/recipients/:id', RecipientController.update);
 
 // Deliverymans
 routes.get('/deliverymans', DeliverymanController.index);

@@ -15,5 +15,6 @@ module.exports = {
     // padronização de underscore para tabelas e colunas
     underscored: true,
     underscoredAll: true,
+    freezeTableName: true,
   },
 };

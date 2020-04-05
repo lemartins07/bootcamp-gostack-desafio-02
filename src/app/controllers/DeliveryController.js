@@ -1,14 +1,15 @@
 import * as Yup from 'yup';
 import Delivery from '../models/Delivery';
+import Deliveryman from '../models/Deliveryman';
+import Recipient from '../models/Recipient';
+
+import DeliveryMail from '../jobs/DeliveryMail';
+import Queue from '../../lib/Queue';
 
 class DeliveryController {
   async index(req, res) {
     return res.json();
   }
-
-  // "recipient_id": 1,
-  // "deliveryman_id": 1,
-  // "product": "Tenis"
 
   async store(req, res) {
     // validar dados de entrada
@@ -22,9 +23,29 @@ class DeliveryController {
       return res.status(400).json({ error: 'Validation fails.' });
     }
 
-    const delivery = await Delivery.create(req.body);
+    const { id } = await Delivery.create(req.body);
+
+    const delivery = await Delivery.findByPk(id, {
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    // deliveryman: '',
+    // recipient: '',
+    // product: '',
 
     // enviar email para o entregador
+    await Queue.add(DeliveryMail.key, delivery);
 
     return res.json(delivery);
   }
